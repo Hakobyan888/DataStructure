@@ -8,6 +8,1072 @@ namespace DataStructureProblems
 {
     class PassedTimusProblems
     {
+        static void Timus2035()
+        {
+            string[] input = Console.ReadLine().Split();
+
+            int x = int.Parse(input[0]);
+            int y = int.Parse(input[1]);
+            int c = int.Parse(input[2]);
+
+            if (x + y < c)
+            {
+                Console.WriteLine("Impossible");
+            }
+            else
+            {
+                int a = Math.Min(x, y);
+                int b = c - a;
+                while (b < 0 && a > 0)
+                {
+                    a--;
+                    b = c - a;
+                }
+                if (b > y || a > x)
+                {
+                    int temp = a;
+                    a = b;
+                    b = temp;
+                }
+                Console.WriteLine($"{a} {b}");
+            }
+
+        }
+
+        static void Timus1025()
+        {
+            int n = int.Parse(Console.ReadLine());
+            List<int> groups = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => int.Parse(arrTemp)).ToList();
+
+            groups.Sort();
+
+            int minGroups = 0;
+
+            if (groups.Count % 2 == 1)
+            {
+                minGroups = groups.Count / 2;
+            }
+            else
+            {
+                minGroups = groups.Count / 2 - 1;
+            }
+
+            int answer = 0;
+
+            for (int i = 0; i <= minGroups; i++)
+            {
+                answer += groups[i] / 2 + 1;
+            }
+
+            Console.WriteLine(answer);
+        }
+
+        static void Timus1224()
+        {
+            string[] input = Console.ReadLine().Split();
+            long n = int.Parse(input[0]);
+            long m = int.Parse(input[1]);
+
+            long answer = Math.Min(2 * (n - 1), 2 * m - 1);
+            Console.WriteLine(answer);
+
+        }
+
+        static void Timus1457()
+        {
+            int n = int.Parse(Console.ReadLine());
+            var items = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => int.Parse(arrTemp));
+            double answer = 0;
+            foreach (var item in items)
+            {
+                answer += item;
+            }
+
+            answer /= n;
+            Console.WriteLine(string.Format("{0:0.000000}", answer));
+
+        }
+
+        static void Timus1083()
+        {
+            string[] input = Console.ReadLine().Split();
+            int n = int.Parse(input[0]);
+            string factors = input[1];
+            int answer = n;
+            var a = n % factors.Length;
+            int i = 1;
+            while (n - i * factors.Length > 0)
+            {
+                answer *= n - i * factors.Length;
+                i++;
+            }
+            Console.WriteLine(answer);
+        }
+
+        static void Timus1638()
+        {
+            string[] input = Console.ReadLine().Split();
+
+
+        }
+
+        static void Timus1935()
+        {
+            int n = int.Parse(Console.ReadLine());
+            var items = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => int.Parse(arrTemp)).ToList();
+            items.Sort();
+            int answer = items[0];
+
+            for (int i = 1; i < n; i++)
+            {
+                answer += Math.Max(items[i], items[i - 1]);
+            }
+            answer += items.Last();
+            Console.WriteLine(answer);
+        }
+
+        static void Timus2031()
+        {
+            int n = int.Parse(Console.ReadLine());
+            if (n == 1)
+            {
+                Console.WriteLine("11");
+            }
+            else if (n == 2)
+            {
+                Console.WriteLine("11 01");
+            }
+            else if (n == 3)
+            {
+                Console.WriteLine("06 68 88");
+            }
+            else if (n == 4)
+            {
+                Console.WriteLine("16 06 68 88");
+            }
+            else
+            {
+                Console.WriteLine("Glupenky Pierre");
+            }
+        }
+
+        static void Timus2111()
+        {
+            int n = int.Parse(Console.ReadLine());
+            var items = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => long.Parse(arrTemp));
+            items = mergeSort(items);
+            long answer = 0;
+            long sum = items.Sum();
+            for (int i = 0; i < n; i++)
+            {
+                answer += sum * items[i];
+                sum -= items[i];
+                answer += sum * items[i];
+            }
+            Console.WriteLine(answer);
+        }
+
+        public static long[] mergeSort(long[] array)
+        {
+            long[] left;
+            long[] right;
+            long[] result = new long[array.Length];
+            if (array.Length <= 1)
+                return array;
+            long midPoint = array.Length / 2;
+            left = new long[midPoint];
+            if (array.Length % 2 == 0)
+                right = new long[midPoint];
+            else
+                right = new long[midPoint + 1];
+            for (long i = 0; i < midPoint; i++)
+                left[i] = array[i];
+            long x = 0;
+            for (long i = midPoint; i < array.Length; i++)
+            {
+                right[x] = array[i];
+                x++;
+            }
+            left = mergeSort(left);
+            right = mergeSort(right);
+            result = merge(left, right);
+            return result;
+        }
+
+        public static long[] merge(long[] left, long[] right)
+        {
+            long resultLength = right.Length + left.Length;
+            long[] result = new long[resultLength];
+            long indexLeft = 0, indexRight = 0, indexResult = 0;
+            while (indexLeft < left.Length || indexRight < right.Length)
+            {
+                if (indexLeft < left.Length && indexRight < right.Length)
+                {
+                    if (left[indexLeft] >= right[indexRight])
+                    {
+                        result[indexResult] = left[indexLeft];
+                        indexLeft++;
+                        indexResult++;
+                    }
+                    else
+                    {
+                        result[indexResult] = right[indexRight];
+                        indexRight++;
+                        indexResult++;
+                    }
+                }
+                else if (indexLeft < left.Length)
+                {
+                    result[indexResult] = left[indexLeft];
+                    indexLeft++;
+                    indexResult++;
+                }
+                else if (indexRight < right.Length)
+                {
+                    result[indexResult] = right[indexRight];
+                    indexRight++;
+                    indexResult++;
+                }
+            }
+            return result;
+        }
+
+        static void Timus1502()
+        {
+            long n = int.Parse(Console.ReadLine());
+
+            Console.WriteLine(n * (n + 1) * (n + 2) / 2);
+        }
+
+        static void Timus1131()
+        {
+            string[] input = Console.ReadLine().Split();
+            long n = int.Parse(input[0]);
+            long k = int.Parse(input[1]);
+            long currentComps = 2;
+            long time = 1;
+            if (k == 1)
+            {
+                time = n - 1;
+                Console.WriteLine(time);
+                return;
+            }
+            if (n == 1)
+            {
+                Console.WriteLine("0");
+                return;
+            }
+            while (currentComps < Math.Min(k, n))
+            {
+                currentComps += currentComps;
+                time += 1;
+            }
+            if (currentComps < n)
+            {
+                if ((n - currentComps) % k == 0)
+                    time += (n - currentComps) / k;
+                else
+                    time += (n - currentComps) / k + 1;
+            }
+            Console.WriteLine(time);
+        }
+
+        static void Timus1792()
+        {
+            var items = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => long.Parse(arrTemp));
+
+            long count = 0;
+            for (int i = 0; i < 7; i++)
+            {
+                items[i] = items[i] == 1 ? 0 : 1;
+                if (items[4] == (items[1] + items[2] + items[3]) % 2)
+                {
+                    count++;
+                }
+                if (items[5] == (items[0] + items[2] + items[3]) % 2)
+                {
+                    count++;
+                }
+                if (items[6] == (items[0] + items[1] + items[3]) % 2)
+                {
+                    count++;
+                }
+                if (count == 3)
+                {
+                    break;
+                }
+                else
+                {
+                    items[i] = items[i] == 1 ? 0 : 1;
+                    count = 0;
+                }
+            }
+            foreach (var item in items)
+            {
+                Console.Write(item + " ");
+            }
+
+
+        }
+
+        static void Timus1139()
+        {
+            string[] input = Console.ReadLine().Split();
+            int divider = int.Parse(input[0]) - 1;
+            int divident = int.Parse(input[1]) - 1;
+
+            int answer = divider + divident - FindCrossesOnTheWay(divident, divider);
+            Console.WriteLine(answer);
+        }
+
+        static int FindCrossesOnTheWay(int divider, int divident)
+        {
+            if (divider < divident)
+            {
+                int temp = divider;
+                divider = divident;
+                divident = temp;
+            }
+            int crosses = 0;
+            for (int i = 1; i <= divider; i++)
+            {
+                if ((divident * i) % divider == 0) crosses++;
+            }
+            return crosses;
+        }
+
+        static void Timus1290()
+        {
+            int n = int.Parse(Console.ReadLine());
+            long[] arr = new long[n];
+            for (int i = 0; i < n; i++)
+            {
+                arr[i] = int.Parse(Console.ReadLine());
+            }
+            arr = mergeSort(arr);
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+        }
+
+        static void Timus1404()
+        {
+            string alphabet = "abcdefghijklmnopqrstuvwxyz";
+            string input = Console.ReadLine();
+            int[] arr = new int[input.Length];
+            for (int i = 0; i < input.Length; i++)
+            {
+                arr[i] = alphabet.IndexOf(input[i]);
+            }
+            for (int i = 1; i < arr.Length; i++)
+            {
+                int secStep = 0;
+                while ((secStep + arr[i - 1]) % 26 != arr[i])
+                {
+                    secStep++;
+                }
+                arr[i] = arr[i - 1] + secStep;
+            }
+            for (int i = arr.Length - 1; i > 0; i--)
+            {
+                arr[i] -= arr[i - 1];
+            }
+            arr[0] -= 5;
+            if (arr[0] < 0)
+            {
+                arr[0] += 26;
+            }
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Console.Write(alphabet[arr[i]]);
+            }
+        }
+
+        static void Timus2011()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            var items = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => long.Parse(arrTemp)).ToList();
+            items.Sort();
+            if (items.All(x => x == items.First()) || items.Count < 3)
+            {
+                Console.WriteLine("No");
+                return;
+            }
+
+            if (items.Count >= 6)
+            {
+                Console.WriteLine("Yes");
+            }
+            else
+            {
+                if (items.Contains(1) && items.Contains(2) && items.Contains(3))
+                {
+                    Console.WriteLine("Yes");
+                    return;
+                }
+                else if (items.Count == 4)
+                {
+                    if (items.First() == items[2] || items[1] == items.Last())
+                    {
+                        Console.WriteLine("No");
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Yes");
+                        return;
+                    }
+                }
+                else if (items.Count == 5)
+                {
+                    if (items.Last() != items[items.Count - 2])
+                    {
+                        Console.WriteLine("No");
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Yes");
+                        return;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No");
+                    return;
+                }
+            }
+        }
+
+        static void Timus2025()
+        {
+            int t, n, k, i, a, b, x, res;
+            t = int.Parse(Console.ReadLine());
+            for (i = 0; i < t; i++)
+            {
+                string[] input = Console.ReadLine().Split();
+                n = int.Parse(input[0]);
+                k = int.Parse(input[1]);
+                if (n % k == 0)
+                {
+                    x = n / k;
+                    res = n * (n - x) / 2;
+                    Console.WriteLine(res);
+                }
+                else
+                {
+                    x = n / k;
+                    b = n - k * x;
+                    a = k - b;
+                    res = ((n - x) * a * x + (n - x - 1) * (x + 1) * b) / 2;
+                    Console.WriteLine(res);
+                }
+            }
+        }
+
+        static void Timus1353()
+        {
+            //int[] ways = new int[1000];
+            //long sum = 0;
+            //long s = long.Parse(Console.ReadLine());
+            //long n = (long)Math.Pow(10, 9);
+            //int i = 1;
+            //if (s == 1) sum++;
+            //if (s > 69)
+            //{
+            //    i = 8;
+            //}
+            //for (int i = 0; i <= 10; i++)
+            //{
+            //    //sum += findCount(i, s);
+            //    dfs(i, s);
+            //}
+            //Console.WriteLine(count);
+            var s = Convert.ToInt32(Console.ReadLine());
+            var VF = new long[s + 1];
+            VF[0] = 1;
+            if (s == 1)
+                Console.WriteLine(10);
+            else
+            {
+                for (int i = 1; i < 10; i++)
+                    for (int j = s; j >= 0; j--)
+                        for (int d = 1; d <= Math.Min(9, j); d++)
+                            VF[j] += VF[j - d];
+                Console.WriteLine(VF[s]);
+            }
+        }
+        static int count = 0;
+
+        public static long[] VF;
+        //public static long f(int N, long S)
+        //{
+        //    if (S < 0) return 0;
+        //    if (N == 0)
+        //        return S == 0 ? 1 : 0;
+        //    if (memo[N, S] != 0)
+        //        return memo[N, S];
+        //    long ans = 0;
+        //    for (int k = 0; k <= 9; k++)
+        //        ans += f(N - 1, S - k);
+        //    return memo[N, S] = ans;
+        //}
+
+        //public static long g(int N, long S)
+        //{
+        //    return f(N, S) - f(N - 1, S);
+        //}
+
+        static void Timus2068()
+        {
+            int n = int.Parse(Console.ReadLine());
+            var items = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => long.Parse(arrTemp)).ToList();
+            items.Sort();
+            var comb = items;
+            bool firstPlayer = true;
+
+            foreach (var item in items)
+            {
+                if (item / 2 % 2 == 0)
+                {
+                    firstPlayer = !firstPlayer;
+                }
+            }
+            if (firstPlayer)
+                Console.WriteLine("Daenerys");
+            else
+                Console.WriteLine("Stannis");
+        }
+
+        //static void Timus1297()
+        //{
+        //    string input = Console.ReadLine();
+        //    var inputReverse = input.Reverse().ToList();
+        //    string inReverse = "";
+        //    for (int i = 0; i < inputReverse.Count(); i++)
+        //    {
+        //        inReverse += inputReverse[i];
+        //    }
+        //    StringHashStruct inputHash = new StringHashStruct(input);
+        //    StringHashStruct inputReverseHash = new StringHashStruct(inReverse);
+
+        //    List<string> result = new List<string>();
+
+        //    for (int i = 0; i < input.Length; i++)
+        //    {
+        //        for (int j = i; j < input.Length; j++)
+        //        {
+        //            if (inputHash.GetSubstringHash(i, j) == inputReverseHash.GetSubstringHash(input.Length - j - 1, input.Length - i - 1))
+        //            {
+        //                result.Add(input.Substring(i, j - i + 1));
+        //            }
+        //        }
+        //    }
+        //    if (result[0].First() != result[0].Last())
+        //        result.Remove(result[0]);
+        //    Console.WriteLine(result.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur));
+
+        //}
+
+        static void Timus1837()
+        {
+            int n = int.Parse(Console.ReadLine());
+            Graph<string> graph = new Graph<string>();
+            GraphAlgorithms<string> algorithms = new GraphAlgorithms<string>();
+            string name = "Isenbaev";
+            bool isIsenbayev = false;
+            double dist = 1;
+            for (int i = 0; i < n; i++)
+            {
+                var input = Console.ReadLine().Split();
+                if (!isIsenbayev && input.Contains("Isenbaev")) isIsenbayev = true;
+                graph.AddVertexToList(input[0]);
+                graph.AddVertexToList(input[1]);
+                graph.AddVertexToList(input[2]);
+                graph.AddEdgeToList(Tuple.Create(input[0], input[1], dist));
+                graph.AddEdgeToList(Tuple.Create(input[0], input[2], dist));
+                graph.AddEdgeToList(Tuple.Create(input[1], input[2], dist));
+            }
+            var names = new List<string>(graph.AdjacencyList.Keys.ToList());
+            names.Sort();
+            if (!isIsenbayev)
+            {
+                foreach (var vertex in names)
+                {
+                    Console.WriteLine($"{vertex} undefined");
+                }
+                return;
+            }
+
+            var bfs = algorithms.BFS(graph, name);
+            foreach (var vertex in names)
+            {
+                if (bfs.ContainsKey(vertex))
+                {
+                    Console.WriteLine($"{vertex} {bfs[vertex]}");
+                }
+                else
+                {
+                    Console.WriteLine($"{vertex} undefined");
+                }
+            }
+        }
+
+        static void KingEscape()
+        {
+            int n = int.Parse(Console.ReadLine());
+            Graph<KeyValuePair<int, int>> graph = new Graph<KeyValuePair<int, int>>((n + 1) * (n + 1));
+            GraphAlgorithms<KeyValuePair<int, int>> graphAlgorithms = new GraphAlgorithms<KeyValuePair<int, int>>();
+            int[,] matrix = new int[n, n];
+            var input = Console.ReadLine().Split();
+            var queenPoint = new KeyValuePair<int, int>(int.Parse(input[0]), int.Parse(input[1]));
+            input = Console.ReadLine().Split();
+            var kingPoint = new KeyValuePair<int, int>(int.Parse(input[0]), int.Parse(input[1]));
+            input = Console.ReadLine().Split();
+            var finalPoint = new KeyValuePair<int, int>(int.Parse(input[0]), int.Parse(input[1]));
+            graph.AddVertexToList(kingPoint);
+            int[] directionRow = new int[] { -1, 1, 0, 0, -1, -1, 1, 1 };
+            int[] directionColumn = new int[] { 0, 0, -1, 1, -1, 1, -1, 1 };
+            int x = queenPoint.Key;
+            int y = queenPoint.Value;
+            while (x > -1 && y > -1)
+            {
+                matrix[x, y] = -1;
+                x--;
+                y--;
+            }
+            x = queenPoint.Key;
+            y = queenPoint.Value;
+            while (x < n && y < n)
+            {
+                matrix[x, y] = -1;
+                x++;
+                y++;
+            }
+            x = queenPoint.Key;
+            y = queenPoint.Value;
+            while (x > -1)
+            {
+                matrix[x, y] = -1;
+                x--;
+            }
+            x = queenPoint.Key;
+            y = queenPoint.Value;
+            while (y > -1)
+            {
+                matrix[x, y] = -1;
+                y--;
+            }
+            x = queenPoint.Key;
+            y = queenPoint.Value;
+            while (x < n)
+            {
+                matrix[x, y] = -1;
+                x++;
+            }
+            x = queenPoint.Key;
+            y = queenPoint.Value;
+            while (y < n)
+            {
+                matrix[x, y] = -1;
+                y++;
+            }
+            int i;
+            int j;
+            for (i = 0; i < n; i++)
+            {
+                for (j = 0; j < n; j++)
+                {
+                    if (matrix[i, j] == -1) continue;
+                    graph.AddVertexToList(new KeyValuePair<int, int>(i, j));
+                    for (int k = 0; k < 8; k++)
+                    {
+                        int rr = i + directionRow[k];
+                        int cc = j + directionColumn[k];
+                        if (rr < 0 || cc < 0 || rr > n - 1 || cc > n - 1 || matrix[rr, cc] == -1) continue;
+                        graph.AddVertexToList(new KeyValuePair<int, int>(rr, cc));
+                        graph.AddEdgeToList(Tuple.Create(new KeyValuePair<int, int>(i, j), new KeyValuePair<int, int>(rr, cc), 1d), true);
+                    }
+                }
+            }
+
+            var ans = graphAlgorithms.ShortestPathFunction(graph, kingPoint);
+            var answer = ans.Invoke(finalPoint);
+            if (answer == null) Console.WriteLine("NO");
+            else Console.WriteLine("YES");
+        }
+
+        static void Timus1982()
+        {
+            Graph<int> graph = new Graph<int>();
+            GraphAlgorithms<int> graphAlgorithms = new GraphAlgorithms<int>();
+            var input = Console.ReadLine().Split();
+            int n = int.Parse(input[0]);
+            int k = int.Parse(input[1]);
+            double[,] matrix = new double[n, n];
+
+            List<int> builtStations = new List<int>();
+            if (k > 0)
+                builtStations = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => int.Parse(arrTemp)).ToList();
+
+
+            for (int i = 0; i < n; i++)
+            {
+                graph.AddVertexToList(i + 1);
+                var inp = Console.ReadLine().Split();
+                for (int j = 0; j < n; j++)
+                {
+                    matrix[i, j] = int.Parse(inp[j]);
+                }
+            }
+
+            foreach (var item in builtStations)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (item == j + 1 || builtStations.Contains(j + 1)) continue;
+                    graph.AddVertexToList(j + 1);
+                    graph.AddEdgeToList(Tuple.Create(item, j + 1, matrix[item - 1, j]), true);
+                }
+            }
+
+            for (int i = 1; i < n + 1; i++)
+            {
+                if (builtStations.Contains(i)) continue;
+                for (int j = 0; j < n; j++)
+                {
+                    if (graph.AdjacencyList.ContainsKey(j + 1) && graph.AdjacencyList[j + 1].Where(x => x.EdgeTo == i).ToList().Count > 0 || builtStations.Contains(i) && builtStations.Contains(j + 1) || i == j + 1) continue;
+                    graph.AddEdgeToList(Tuple.Create(i, j + 1, matrix[i - 1, j]), true);
+                }
+            }
+
+            Dictionary<int, double> answer = new Dictionary<int, double>();
+            var a = graphAlgorithms.Kruskal(graph, builtStations);
+            int l = n - k;
+            a.Sort();
+            double sum = 0;
+            for (int i = 0; i < n - k; i++)
+            {
+                sum += a[i].Weight;
+            }
+
+            Console.WriteLine(sum);
+
+        }
+
+        static void Bakery()
+        {
+            Graph<long> graph = new Graph<long>();
+            GraphAlgorithms<long> graphAlgorithms = new GraphAlgorithms<long>();
+            var firstLine = Console.ReadLine().Split();
+            long n = long.Parse(firstLine[0]);
+            long m = long.Parse(firstLine[1]);
+            long k = long.Parse(firstLine[2]);
+
+            for (long i = 0; i < m; i++)
+            {
+                var input = Console.ReadLine().Split();
+                var u = long.Parse(input[0]);
+                var v = long.Parse(input[1]);
+                var l = double.Parse(input[2]);
+                graph.AddVertexToList(u);
+                graph.AddVertexToList(v);
+                graph.AddEdgeToList(Tuple.Create(u, v, l));
+            }
+            List<long> items = new List<long>();
+            if (k > 0)
+                items = Array.ConvertAll(Console.ReadLine().Split(' '), arrTemp => long.Parse(arrTemp)).ToList();
+
+            List<long> otherCities = new List<long>();
+            for (long i = 1; i < n + 1; i++)
+            {
+                if (items.Contains(i)) continue;
+                otherCities.Add(i);
+            }
+
+            double answer = long.MaxValue;
+            if (items.Count > 0)
+                foreach (var item in items)
+                {
+                    for (int i = 0; i < otherCities.Count; i++)
+                    {
+                        if (!graph.AdjacencyList.ContainsKey(item)) continue;
+                        var ans = graphAlgorithms.OrderedListShortesDistance(graph, otherCities[i], item);
+                        if (ans == null) continue;
+                        answer = Math.Min(answer, ans.Last().Item2);
+                    }
+                }
+            else
+            {
+                answer = -1;
+            }
+            if (answer == long.MaxValue)
+                answer = -1;
+            Console.WriteLine(answer);
+        }
+
+        static void Timus1280()
+        {
+            Graph<int> graph = new Graph<int>();
+            GraphAlgorithms<int> graphAlgorithms = new GraphAlgorithms<int>();
+            var input = Console.ReadLine().Split();
+            int n = int.Parse(input[0]);
+            int m = int.Parse(input[1]);
+
+            for (int i = 1; i < n + 1; i++)
+            {
+                graph.AddVertexToList(i);
+            }
+            double l = 1;
+            for (int i = 0; i < m; i++)
+            {
+                var inp = Console.ReadLine().Split();
+                graph.AddEdgeToList(Tuple.Create(int.Parse(inp[0]), int.Parse(inp[1]), l), true);
+            }
+            var answer = Console.ReadLine().Split().Select(int.Parse).ToHashSet();
+            if (m == 0)
+            {
+                Console.WriteLine("YES");
+                return;
+            }
+            var myAnswer = graphAlgorithms.IsTopologicalSortValid(graph, answer);
+
+            if (myAnswer)
+            {
+                Console.WriteLine("YES");
+            }
+            else
+            {
+                Console.WriteLine("NO");
+            }
+        }
+
+        static int N = 10005;
+        static int[] a = new int[100050];
+        static List<int>[] dist = new List<int>[N];
+        static List<int>[] f1 = new List<int>[N];
+        static List<int>[] f2 = new List<int>[N];
+
+
+        #region Timus1651
+        static void Timus1651()
+        {
+            var n = Convert.ToInt32(Console.ReadLine());
+            a = ("0 " + Console.In.ReadToEnd()).Split(new char[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse).ToArray();
+
+            if (a[1] == a[n])
+            {
+                Console.WriteLine(a[1]);
+                return;
+            }
+            dist[a[1]] = new List<int>();
+            dist[a[1]].Add(0);
+            f1[a[1]] = new List<int>();
+            f1[a[1]].Add(-1);
+            f2[a[1]] = new List<int>();
+            f2[a[1]].Add(-1);
+
+
+            for (int i = 2; i <= n; i++)
+            {
+                if (dist[a[i]] == null)
+                    dist[a[i]] = new List<int>();
+                if (f1[a[i]] == null)
+                    f1[a[i]] = new List<int>();
+                if (f2[a[i]] == null)
+                    f2[a[i]] = new List<int>();
+                int l1 = dist[a[i]].Count;
+                int l2 = dist[a[i - 1]].Count;
+
+                if (l1 == 0 || (dist[a[i]][l1 - 1] > dist[a[i - 1]][l2 - 1] + 1))
+                {
+                    dist[a[i]].Add(dist[a[i - 1]][l2 - 1] + 1);
+                    f1[a[i]].Add(a[i - 1]);
+                    f2[a[i]].Add(l2 - 1);
+                }
+
+            }
+
+            DFS(a[n], dist[a[n]].Count - 1);
+
+        }
+
+        static void DFS(int s, int e)
+        {
+            if (f1[s][e] != -1)
+                DFS(f1[s][e], f2[s][e]);
+            Console.Write(s + " ");
+        }
+        #endregion
+
+        public static void Timus1210()
+        {
+            int n = int.Parse(Console.ReadLine());
+
+            Graph<int> graph = new Graph<int>();
+            GraphAlgorithms<int> graphAlgorithms = new GraphAlgorithms<int>();
+            List<List<int>> levels = new List<List<int>>();
+            int vertexCount = 0;
+            levels.Add(new List<int>() { 0 });
+            graph.AddVertexToList(vertexCount++);
+            for (int i = 0; i < n; i++)
+            {
+                var q = Console.ReadLine();
+                if (q == "*")
+                {
+                    i--;
+                    continue;
+                }
+                int k = int.Parse(q);
+                levels.Add(new List<int>());
+                for (int m = 0; m < k; m++)
+                {
+                    graph.AddVertexToList(vertexCount);
+                    levels.Last().Add(vertexCount);
+                    vertexCount++;
+                }
+                for (int j = 0; j < k; j++)
+                {
+                    var input = Console.ReadLine().Split().Select(int.Parse).ToArray();
+
+                    for (int l = 0; l < input.Length - 2; l += 2)
+                    {
+                        var firstVertex = levels[i][input[l] - 1];
+                        graph.AddEdgeToList(Tuple.Create(firstVertex, levels[i + 1][j], (double)input[l + 1]), true);
+                    }
+                }
+            }
+
+            var ez = graphAlgorithms.ShortestDistance(graph, 0);
+            List<double> answer = new List<double>();
+            foreach (var item in levels.Last())
+            {
+                if (ez.ContainsKey(item))
+                    answer.Add(ez[item]);
+            }
+            answer.Sort();
+            Console.WriteLine(answer.First());
+        }
+
+        public static void Timus1272()
+        {
+            var nkm = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            var n = nkm[0];
+            var k = nkm[1];
+            var m = nkm[2];
+            var dj = new DisjointSet(n);
+            for (int i = 0; i < k; i++)
+            {
+                var xy = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                dj.Union(xy[0], xy[1]);
+            }
+            for (int i = 0; i < m; i++)
+            {
+                var xy = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            }
+            Console.WriteLine(dj.SetCount - 1);
+
+
+        }
+
+        public static void Timus1022()
+        {
+            var n = Convert.ToInt32(Console.ReadLine());
+            var graph = new Graph<int>();
+            for (int i = 1; i <= n; i++)
+                graph.AddVertexToList(i);
+            for (int i = 1; i <= n; i++)
+            {
+                var input = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                for (int j = 0; j < input.Length - 1; j++)
+                {
+                    graph.AddEdgeToList(Tuple.Create(i, input[j], 1.0), true);
+                }
+            }
+            GraphAlgorithms<int> graphAlgorithms = new GraphAlgorithms<int>();
+            var a = graphAlgorithms.TopologicalSortKahn(graph);
+            Console.WriteLine(string.Join(" ", a));
+        }
+
+        public static void Timus1930()
+        {
+            Graph<int> graph = new Graph<int>();
+            GraphAlgorithms<int> graphAlgorithms = new GraphAlgorithms<int>();
+            var input = Console.ReadLine().Split();
+            int n = int.Parse(input[0]);
+            int m = int.Parse(input[1]);
+
+            List<Tuple<int, int>> comb = new List<Tuple<int, int>>();
+
+            for (int i = 1; i < n + 1; i++)
+            {
+                graph.AddVertexToList(i);
+            }
+            for (int i = 0; i < m; i++)
+            {
+                var inp = Console.ReadLine().Split();
+                int x = int.Parse(inp[0]);
+                int y = int.Parse(inp[1]);
+                comb.Add(Tuple.Create(x, y));
+                graph.AddEdgeToList(Tuple.Create(x, y, 1.0));
+            }
+            var lastInput = Console.ReadLine().Split();
+            int start = int.Parse(lastInput[0]);
+            int end = int.Parse(lastInput[1]);
+
+
+            var answer = graphAlgorithms.ShortestPathFunction(graph, start);
+            var ans = answer.Invoke(end).ToList();
+            var bfs = graphAlgorithms.BFS(graph, start);
+            if (ans.Count == 2)
+            {
+                Console.WriteLine("0");
+                return;
+            }
+            for (int i = 1; i < ans.Count - 1; i++)
+            {
+                if (comb.Contains(Tuple.Create(ans[i], ans[i + 1]))) continue;
+                count++;
+            }
+            Console.WriteLine(count);
+        }
+
+        public static void Timus1471()
+        {
+            var n = Convert.ToInt32(Console.ReadLine());
+            if (n == 1)
+            {
+                Console.WriteLine(0);
+                return;
+            }
+            var tree = new Tree(n);
+            for (int i = 1; i < n; i++)
+            {
+                var input = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                tree.AddEdge(input[0], input[1], input[2]);
+            }
+            tree.Precalculate();
+            var m = Convert.ToInt32(Console.ReadLine());
+            for (int i = 0; i < m; i++)
+            {
+                var input = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                var x = input[0];
+                var y = input[1];
+                if (x == y)
+                    Console.WriteLine(0);
+                else
+                {
+                    var node = tree.GetLowestCommonAncestor(x, y);
+                    var xw = tree._weighted[x];
+                    var yw = tree._weighted[y];
+                    var nw = tree._weighted[node];
+                    Console.WriteLine(xw + yw - 2 * nw);
+                }
+            }
+        }
         static void Timus1000()
         {
             string[] a = Console.ReadLine().Split();
