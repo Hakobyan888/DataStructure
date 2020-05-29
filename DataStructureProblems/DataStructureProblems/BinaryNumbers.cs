@@ -20,8 +20,7 @@ namespace DataStructureProblems
             Console.WriteLine();
         }
 
-        public void generateAllBinaryStrings(int n,
-                                    int[] arr, int i)
+        public void generateAllBinaryStrings(int n, int[] arr, int i)
         {
             if (i == n)
             {

@@ -9,7 +9,6 @@ namespace DataStructureProblems
         static void Main(string[] args)
         {
         }
-
     }
 
     public class Job
