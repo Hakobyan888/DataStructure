@@ -8,6 +8,24 @@ namespace DataStructureProblems
 {
     class PassedTimusProblems
     {
+        static void Timus1028()
+        {
+            int n = Convert.ToInt32(Console.ReadLine());
+            var st = new SegmentTree(40000);
+            var level = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                var temp = Console.ReadLine().Split(' ');
+                var x = int.Parse(temp[0]);
+                level[st.GetSum(0, 40000, 0, x, 0)]++;
+                st.UpdateValue(0, 40000, x, 1, 0);
+            }
+            for (int i = 0; i < level.Length; i++)
+            {
+                Console.WriteLine(level[i]);
+            }
+        }
+
         static void Timus2035()
         {
             string[] input = Console.ReadLine().Split();
