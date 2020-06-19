@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -8,6 +9,149 @@ namespace DataStructureProblems
 {
     class PassedTimusProblems
     {
+
+        static void Timus1026()
+        {
+            int n = int.Parse(Console.ReadLine());
+            List<int> numbers = new List<int>();
+            for (int i = 0; i < n; i++)
+            {
+                numbers.Add(int.Parse(Console.ReadLine()));
+            }
+            numbers.Sort();
+
+            var a = Console.ReadLine();
+            int k = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < k; i++)
+            {
+                int q = int.Parse(Console.ReadLine());
+                Console.WriteLine(numbers[q - 1]);
+            }
+
+        }
+
+        static void Timus1052()
+        {
+            int n = int.Parse(Console.ReadLine());
+            List<Point> points = new List<Point>();
+
+            for (int i = 0; i < n; i++)
+            {
+                var xy = Console.ReadLine().Split();
+                points.Add(new Point(int.Parse(xy[0]), int.Parse(xy[1])));
+            }
+            Console.WriteLine(MaxPointsOnLine(points));
+        }
+
+        static int MaxPointsOnLine(List<Point> points)
+        {
+            int N = points.Count;
+            if (N < 2)
+                return N;
+
+            int maxPoint = 0;
+            int curMax, overlapPoints, verticalPoints;
+
+            Dictionary<Point, List<Point>> slopePairs = new Dictionary<Point, List<Point>>();
+
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = i + 1; j < N; j++)
+                {
+                    int deltaY = points[j].Y - points[i].Y;
+                    int deltaX = points[j].X - points[i].X;
+                    int g = GCD(deltaX, deltaY);
+
+                    deltaY /= g;
+                    deltaX /= g;
+                    var point = new Point(deltaY, deltaX);
+                    if (!slopePairs.ContainsKey(point))
+                        slopePairs.Add(point, new List<Point>());
+                    slopePairs[point].Add(points[i]);
+                    slopePairs[point].Add(points[j]);
+
+                }
+                slopePairs.Clear();
+            }
+
+            return maxPoint;
+        }
+
+        static int GCD(int a, int b)
+        {
+            return b == 0 ? a : GCD(b, a % b);
+        }
+
+        static List<Tuple<long, long, int>> tastes = new List<Tuple<long, long, int>>();
+        static void Timus2067()
+        {
+            int n = int.Parse(Console.ReadLine());
+            for (int i = 0; i < n; i++)
+            {
+                var input = Console.ReadLine().Split();
+                var s = long.Parse(input[0]);
+                var r = long.Parse(input[1]);
+                tastes.Add(Tuple.Create(s, r, i + 1));
+            }
+            if (n == 2)
+            {
+                Console.WriteLine(1);
+                Console.WriteLine($"1 2");
+                return;
+            }
+            var a = true;
+
+            for (int i = 2; i < n; i++)
+            {
+                if (!IsBestFriend(i - 2, i - 1, i))
+                {
+                    a = false;
+                    break;
+                }
+            }
+            if (a)
+            {
+                var l = tastes.OrderBy(x => x.Item1).ThenBy(y => y.Item2);
+                Console.WriteLine(1);
+                Console.WriteLine($"{l.First().Item3} {l.Last().Item3}");
+            }
+            else
+                Console.WriteLine(0);
+
+        }
+
+        static bool IsBestFriend(int v, int u, int w)
+        {
+            return (tastes[u].Item2 - tastes[v].Item2) * (tastes[w].Item1 - tastes[v].Item1) == (tastes[w].Item2 - tastes[v].Item2) * (tastes[u].Item1 - tastes[v].Item1);
+        }
+
+        static void Timus1640()
+        {
+            var n = Convert.ToInt32(Console.ReadLine());
+            var x = new int[n];
+            var y = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                var input = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                x[i] = input[0];
+                y[i] = input[1];
+            }
+            var t = 0.5000000000;
+            var r = double.MinValue;
+            for (int i = 0; i < n; i++)
+            {
+                var x1 = x[i] - t;
+                var y1 = y[i] - t;
+                var sqrt = Math.Sqrt(Math.Pow(x1, 2) + Math.Pow(y1, 2));
+                if (sqrt > r)
+                {
+                    r = sqrt;
+                }
+            }
+            Console.WriteLine("{0} {1} {2}", t, t, Math.Round(r, 10));
+        }
+
         static void Timus1028()
         {
             int n = Convert.ToInt32(Console.ReadLine());
@@ -17,7 +161,7 @@ namespace DataStructureProblems
             {
                 var temp = Console.ReadLine().Split(' ');
                 var x = int.Parse(temp[0]);
-                level[st.GetSum(0, 40000, 0, x, 0)]++;
+                //level[st.GetSum(0, 40000, 0, x, 0)]++;
                 st.UpdateValue(0, 40000, x, 1, 0);
             }
             for (int i = 0; i < level.Length; i++)

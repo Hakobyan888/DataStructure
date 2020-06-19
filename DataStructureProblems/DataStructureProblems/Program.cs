@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -10,41 +11,144 @@ namespace DataStructureProblems
         static void Main(string[] args)
         {
         }
-       
-        static void Timus1542()
+
+        //static void Timus1320()
+        //{
+        //    Graph<int> graph = new Graph<int>();
+        //    GraphAlgorithms<int> graphAlgorithms = new GraphAlgorithms<int>();
+        //    string[] s = Console.In.ReadToEnd().Split(new char[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+        //    for (int i = 0; i < s.Length; i += 2)
+        //    {
+        //        var first = int.Parse(s[i]);
+        //        var second = int.Parse(s[i + 1]);
+        //        graph.AddVertexToList(first);
+        //        graph.AddVertexToList(second);
+        //        graph.AddEdgeToList(Tuple.Create(first, second, 1d), true);
+        //    }
+
+        //    var answer = graphAlgorithms.FindComponents(graph);
+        //    foreach(var item in answer)
+        //    {
+        //        var list = new List<int>();
+        //        foreach (var a in item.Value)
+        //            list.AddRange(graph.AdjacencyList[a].ToList());
+
+        //        if (item.Value.Count % 2 != 0)
+        //        {
+        //            Console.WriteLine(1);
+        //            return;
+        //        }
+
+        //    }
+        //    Console.WriteLine(0);
+        //}
+
+
+        static void Timus1354()
         {
-            var N = Convert.ToInt32(Console.ReadLine());
-            var dict = new Dictionary<string, int>();
-            for (int i = 0; i < N; i++)
+            Stack<char> stack = new Stack<char>();
+
+            var input = Console.ReadLine();
+
+            var s = new StringBuilder(input);
+            for (int i = 0; i < s.Length; i++)
             {
-                var input = Console.ReadLine().Split();
-                var str = input[0];
-                var n = int.Parse(input[1]);
-                dict.Add(str, n);
-            }
-            var words = dict.OrderByDescending(x => x.Value).ThenBy(x => x.Key).ToList();
-            dict = null;
-            var trie = new Trie();
-            foreach (var w in words)
-                trie.Insert(w.Key);
-            var m = Convert.ToInt32(Console.ReadLine());
-            for (int i = 0; i < m; i++)
-            {
-                var s = Console.ReadLine();
-                trie.AutoSuggestion(trie.root, s);
-                var count = 0;
-                var all = words.Where(x => trie.AutoCompletedSuggestions.Contains(x.Key));
-                foreach (var w in all)
+                s.Insert(s.Length - i, s[i]);
+                if (IsPalindrome(s))
                 {
-                    count++;
-                    Console.WriteLine(w.Key);
-                    if (count == 10)
-                        break;
+                    Console.WriteLine(s);
+                    return;
                 }
-                if (i != m - 1)
-                    Console.WriteLine();
             }
         }
+
+        static bool IsPalindrome(StringBuilder word)
+        {
+            var l = word.Length;
+            for (var i = 0; i < l / 2; i++)
+            {
+                if (word[i] != word[l - 1 - i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //static void Timus1111()
+        //{
+        //    int n = int.Parse(Console.ReadLine());
+        //    List<Square> squares = new List<Square>();
+        //    for (int i = 0; i < n; i++)
+        //    {
+        //        var input = Console.ReadLine().Split();
+        //        var firstPoint = new Point(int.Parse(input[0]), int.Parse(input[1]));
+        //        var secondPoint = new Point(int.Parse(input[2]), int.Parse(input[3]));
+        //        var thirdPoint = new Point(secondPoint.X, firstPoint.Y);
+        //        var forthPoint = new Point(secondPoint.Y, firstPoint.X);
+        //        squares.Add(new Square(firstPoint, secondPoint, thirdPoint, forthPoint));
+        //    }
+
+        //    var inp = Console.ReadLine().Split();
+        //    var point = new Point(int.Parse(inp[0]), int.Parse(inp[1]));
+
+        //    //for (int i = 0; i < n; i++)
+        //    //{
+        //    //    if(squares[i].point1.X >= )
+        //    //}
+
+
+        //}
+
+        //struct Square
+        //{
+        //    public Point point1;
+        //    public Point point2;
+        //    public Point point3;
+        //    public Point point4;
+
+        //    public Square(Point point1, Point point2, Point point3, Point point4)
+        //    {
+        //        this.point1 = point1;
+        //        this.point2 = point2;
+        //        this.point3 = point3;
+        //        this.point4 = point4;
+        //    }
+        //}
+
+        //static void Timus1542()
+        //{
+        //    var trie = new Trie();
+        //    var N = Convert.ToInt32(Console.ReadLine());
+        //    var dict = new Dictionary<string, int>();
+        //    for (int i = 0; i < N; i++)
+        //    {
+        //        var input = Console.ReadLine().Split();
+        //        var str = input[0];
+        //        var n = int.Parse(input[1]);
+        //        dict.Add(str, n);
+        //        trie.InsertWord(str);
+        //    }
+        //    var words = dict.OrderByDescending(x => x.Value).ThenBy(x => x.Key).ToList();
+        //    var m = Convert.ToInt32(Console.ReadLine());
+        //    for (int i = 0; i < m; i++)
+        //    {
+        //        var s = Console.ReadLine();
+        //        var list = trie.GetWordsForPrefix(s);
+        //        var count = 0;
+        //        var all = words.Where(x => list.Contains(x.Key));
+        //        foreach (var w in all)
+        //        {
+        //            count++;
+        //            Console.WriteLine(w.Key);
+        //            if (count == 10)
+        //                break;
+        //        }
+        //        if (i != m - 1)
+        //            Console.WriteLine();
+        //    }
+        //}
+
     }
 
     public class Job

@@ -2,140 +2,92 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 namespace DataStructureProblems
 {
-    // Trie node
     public class TrieNode
     {
-        // Alphabet size (# of symbols)
-        private static readonly int ALPHABET_SIZE = 26;
-        public TrieNode[] children = new TrieNode[ALPHABET_SIZE];
-        public bool isEndOfWord; // isEndOfWord is true if the node represents end of a word
-        public TrieNode()
+        public string Prefix { get; set; }
+        public Dictionary<char, TrieNode> Children { get; set; }
+        public bool IsWord;
+        public TrieNode(string prefix)
         {
-            isEndOfWord = false;
-            for (int i = 0; i < ALPHABET_SIZE; i++)
-                children[i] = null;
+            this.Prefix = prefix;
+            this.Children = new Dictionary<char, TrieNode>();
         }
     }
     public class Trie
     {
         public TrieNode root;
-        public HashSet<string> AutoCompletedSuggestions { get; set; }
+        public int CountNode = 1;
         public Trie()
         {
-            root = new TrieNode();
-            AutoCompletedSuggestions = new HashSet<string>();
+            root = new TrieNode("");
         }
-        /// <summary>
-        /// If not present, inserts key into trie, If the key is prefix of trie node, just marks leaf node
-        /// </summary>
-        /// <param name="key"></param>
-        public void Insert(String key)
+        public void InsertWord(string s)
         {
-            int level;
-            var length = key.Length;
-            int index;
-            var pCrawl = root;
-            for (level = 0; level < length; level++)
+            var current = root;
+            for (int i = 0; i < s.Length; i++)
             {
-                index = key[level] - 'a';
-                pCrawl.children[index] ??= new TrieNode();
-                pCrawl = pCrawl.children[index];
+                if (!current.Children.ContainsKey(s[i]))
+                {
+                    current.Children.Add(s[i], new TrieNode(s.Substring(0, i + 1)));
+                    CountNode++;
+                }
+                current = current.Children[s[i]];
+                if (i == s.Length - 1)
+                    current.IsWord = true;
             }
-            pCrawl.isEndOfWord = true; // mark last node as leaf
         }
-        /// <summary>
-        /// Returns true if key presents in trie, else false
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public bool Search(String key)
+
+        List<string> results = new List<string>();
+
+        public List<string> GetWordsForPrefix(string pre)
         {
-            int level;
-            var length = key.Length;
-            int index;
-            var pCrawl = root;
-            for (level = 0; level < length; level++)
+            results.Clear();
+
+            var current = root;
+            foreach (var c in pre)
             {
-                index = key[level] - 'a';
-                if (pCrawl.children[index] == null)
+                if (current.Children.ContainsKey(c))
+                    current = current.Children[c];
+                else
+                    return results;
+            }
+            FindAllChildWords(current, results);
+            return results;
+        }
+        private void FindAllChildWords(TrieNode node, List<string> results)
+        {
+            if (node.IsWord)
+                results.Add(node.Prefix);
+            foreach (var c in node.Children.Keys)
+            {
+                FindAllChildWords(node.Children[c], results);
+            }
+        }
+        public bool Search(string key)
+        {
+            var current = root;
+            foreach (var k in key)
+            {
+                if (current.Children[k] == null)
                     return false;
-                pCrawl = pCrawl.children[index];
+                current = current.Children[k];
             }
-            return (pCrawl != null && pCrawl.isEndOfWord);
+            return current != null && current.IsWord;
         }
-        /// <summary>
-        /// Returns false if current node has a child . If all children are NULL, return true.
-        /// </summary>
-        /// <param name="root"></param>
-        /// <returns></returns>
-        public bool IsLastNode(TrieNode root)
-        {
-            return root.children.All(t => t == null);
-        }
-        /// <summary>
-        /// Recursive function to find auto-suggestions for given node.
-        /// </summary>
-        /// <param name="root"></param>
-        /// <param name="currPrefix"></param>
-        private void Suggestions(TrieNode root, StringBuilder currPrefix)
-        {
-            // found a string in Trie with the given prefix
-            if (root.isEndOfWord)
-            {
-                AutoCompletedSuggestions.Add(currPrefix.ToString());
-            }
-            // All children struct node pointers are NULL
-            if (IsLastNode(root))
-                return;
-            for (var i = 0; i < root.children.Length; i++)
-            {
-                if (root.children[i] == null) continue;
-                currPrefix.Append((char)('a' + i));
-                Suggestions(root.children[i], currPrefix);
-                currPrefix.Remove(currPrefix.ToString().LastIndexOf(currPrefix.ToString().Last()), 1);
-            }
-        }
-        /// <summary>
-        /// Find suggestions for given query prefix
-        /// </summary>
-        /// <param name="root"></param>
-        /// <param name="query"></param>
-        public void AutoSuggestion(TrieNode root, string query)
-        {
-            AutoCompletedSuggestions = null;
-            AutoCompletedSuggestions = new HashSet<string>();
-            var pCrawl = root;
-            // Check if prefix is present and find the
-            // the node (of last level) with last character
-            // of given string.
-            foreach (var index in query.Select(t => t - 'a'))
-            {
-                // no string in the Trie has this prefix
-                if (pCrawl.children[index] == null)
-                    return;
-                pCrawl = pCrawl.children[index];
-            }
-            // If prefix is present as a word.
-            var isWord = pCrawl.isEndOfWord;
-            // If prefix is last node of tree (has no
-            // children)
-            var isLast = IsLastNode(pCrawl);
-            // If prefix is present as a word, but
-            // there is no subtree below the last
-            // matching node.
-            if (isWord && isLast)
-            {
-                AutoCompletedSuggestions.Add(query);
-                return;
-            }
-            // If there are are nodes below last
-            // matching character.
-            if (isLast) return;
-            var prefix = query;
-            Suggestions(pCrawl, new StringBuilder(prefix));
-        }
+        //public void SearchPrefix(string word, int cost)
+        //{
+        //    var node = root;
+        //    foreach (var index in word.Select(t => t - 'a'))
+        //    {
+        //        if (node.children[index] == null) return;
+        //        node = node.children[index];
+        //        if (!node.isEndOfWord) continue;
+        //        node.words.Add(Tuple.Create(-cost, word));
+        //        if (node.words.Count > 12)
+        //            node.words.Remove(node.words.Last());
+        //    }
+        //}
     }
 }
